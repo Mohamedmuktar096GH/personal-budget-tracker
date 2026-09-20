@@ -1,68 +1,263 @@
-/* --- ELEMENT SELECTOR --- */
+/* ==========================================================================
+   1. REGULATED COLOR PALETTE & VARIABLES
+   ========================================================================== */
+:root {
+  /* Layout Canvas Surfaces */
+  --bg-main: #0f172a;        /* Deep slate page background canvas */
+  --bg-card: #1e293b;        /* Medium slate block surface for visual cards */
+  --border-color: #334155;   /* Subtle boundary line splitting layout elements */
+  
+  /* Brand Identity & Interaction Signals */
+  --brand-primary: #0d9488;  /* Deep Teal for table headers and button backgrounds */
+  --brand-hover: #0f766e;    /* Darker Teal transition shade for hover states */
+  --brand-accent: #38bdf8;   /* Sky Blue accent highlight line under section headers */
+  
+  /* Typographic Hierarchy Tokens */
+  --text-dark: #f8fafc;      /* Crisp off-white for highly visible page titles */
+  --text-medium: #94a3b8;    /* Muted cool grey for description lines and input labels */
+  --text-light: #64748b;     /* Darker grey exclusively for text input placeholders */
+  
+  /* Financial Data Indicator */
+  --color-expense: #f43f5e;  /* Rose Red assigned to transaction cost rows */
+  --focus-ring: rgba(13, 148, 136, 0.25); /* Teal glow shade when typing in form inputs */
+}
+
+/* ==========================================================================
+   2. SYSTEM BOUNDARY RESET & GLOBAL CONFIGURATIONS
+   ========================================================================== */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box; /* Includes padding inside assigned widths so layout won't break */
+}
+
 body {
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f4f7f6;
-    color: #333333;
-    padding: 20px;
+  background-color: var(--bg-main);
+  color: var(--text-medium);
+  font-family: 'Inter', -apple-system, sans-serif; /* Clean font for text data */
+  font-size: 16px;
+  line-height: 1.6; /* Sets optimal body line-height within recommended range */
+  padding: 2.5rem 1.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
-/* --- HEADER STYLING --- */
-header {
-    text-align: center;
-    margin-bottom: 30px;
-    padding: 10px;
-    background-color: #ffffff;
-    border-radius: 8px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+.app-container {
+  width: 100%;
+  max-width: 900px;
 }
 
-/* --- ADD EXPENSE BOX STYLING --- */
-.add-expense-container {
-    background-color: #ffffff;
-    padding: 20px;
-    margin-bottom: 25px;
-    border-radius: 8px;
-    border-left: 5px solid #007bff;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+/* ==========================================================================
+   3. HIGH-FIDELITY CUSTOM TYPOGRAPHY (VISUAL HIERARCHY)
+   ========================================================================== */
+h1, h2, h3 {
+  font-family: 'Plus Jakarta Sans', sans-serif; /* Modern bold font for headings */
+  color: var(--text-dark);
+  font-weight: 700;
+  letter-spacing: -0.025em;
+  line-height: 1.2;
 }
 
-.input-group {
-    margin-bottom: 15px;
+h1 {
+  font-size: 2.25rem;
+  font-weight: 800;
+  margin-bottom: 0.5rem;
 }
 
-.input-group label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
+h2 {
+  font-size: 1.35rem;
+  margin-bottom: 1.5rem;
+  position: relative;
+  display: inline-block;
 }
 
-.input-group input, .input-group select {
-    width: 100%;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    box-sizing: border-box;
+/* Decorative accent bar under card titles using our brand-accent variable */
+h2::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 0;
+  width: 32px;
+  height: 3px;
+  background-color: var(--brand-accent);
+  border-radius: 2px;
 }
 
-button {
-    background-color: #007bff;
-    color: white;
-    padding: 10px 15px;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    font-weight: bold;
+label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-dark);
+  display: block;
+  margin-bottom: 0.5rem;
 }
 
-/* --- PLACEHOLDER LIST STYLING --- */
-.expenses-list-container {
-    background-color: #eaeaea;
-    padding: 20px;
-    border-radius: 8px;
-    border: 1px dashed #999999;
+/* ==========================================================================
+   4. INTENTIONAL CSS BOX MODEL DESIGN (THE VISUAL CARDS)
+   ========================================================================== */
+.app-card {
+  background-color: var(--bg-card); /* Soft medium-slate block face */
+  border: 1px solid var(--border-color); /* Defines clean container boundaries */
+  border-radius: 12px; /* Gives elements a modern, softer rounded corner appearance */
+  padding: 2rem; /* Creates comfortable breathing space inside the card containers */
+  margin-bottom: 1.75rem; /* Forces a distinct layout separating margin between page sections */
+  width: 100%;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.2), 0 2px 4px -2px rgba(0, 0, 0, 0.2);
 }
 
-.placeholder-text {
-    font-style: italic;
-    color: #666666;
+/* Unique adjustments to make your topmost header title pop */
+.header-card {
+  text-align: center;
+  background: linear-gradient(135deg, var(--bg-card) 0%, #1e293b 100%);
+  border-left: 5px solid var(--brand-primary); /* Bold teal brand structural entry bar */
+  padding: 2.5rem 2rem;
 }
+
+.header-card p {
+  color: var(--text-medium);
+  max-width: 600px;
+  margin: 0.5rem auto 0 auto;
+}
+
+/* ==========================================================================
+   5. TRANSACTION FORM INTERACTIVE ARCHITECTURE
+   ========================================================================= */
+#expense-form {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.25rem;
+  align-items: flex-end;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+input[type="text"],
+input[type="number"],
+select {
+  width: 100%;
+  font-family: inherit;
+  font-size: 0.95rem;
+  color: var(--text-dark);
+  padding: 0.65rem 0.85rem;
+  border: 1.5px solid var(--border-color);
+  border-radius: 6px;
+  background-color: var(--bg-main);
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease, background-color 0.2s ease;
+}
+
+input:focus,
+select:focus {
+  border-color: var(--brand-primary);
+  box-shadow: 0 0 0 3px var(--focus-ring);
+  background-color: var(--bg-card);
+}
+
+input::placeholder {
+  color: var(--text-light);
+}
+
+/* Upgraded High-Grade Action Button Layout */
+.btn-primary {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-weight: 700;
+  font-size: 0.95rem;
+  background-color: var(--brand-primary);
+  color: var(--text-dark);
+  border: none;
+  border-radius: 6px;
+  padding: 0.75rem 1.25rem;
+  cursor: pointer;
+  width: 100%;
+  height: 42px;
+  /* Premium micro-interaction smoothing */
+  transition: background-color 0.25s cubic-bezier(0.4, 0, 0.2, 1), transform 0.1s ease;
+}
+
+.btn-primary:hover {
+  background-color: var(--brand-hover);
+}
+
+.btn-primary:active {
+  transform: scale(0.97);
+}
+
+/* ==========================================================================
+   6. EXPENSE LEDGER SPREADSHEET MECHANICS (UPGRADED AXIS ALIGNMENT)
+   ========================================================================== */
+.table-responsive {
+  width: 100%;
+  overflow-x: auto;
+}
+
+#expense-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 0.5rem;
+}
+
+/* Bold Contrasting Elements for perfect visual hierarchy scores */
+#expense-table th {
+  background-color: #1e293b; /* Medium slate structural depth band */
+  color: var(--text-dark);
+  font-weight: 700;
+  font-size: 0.85rem;
+  text-transform: uppercase;
+  letter-spacing: 0.075em;
+  padding: 1rem;
+  border-bottom: 2.5px solid var(--brand-primary); /* Bold teal baseline tracker line */
+}
+
+#expense-table td {
+  padding: 1rem;
+  font-size: 0.95rem;
+  color: var(--text-dark);
+  border-bottom: 1px solid var(--border-color);
+  vertical-align: middle;
+}
+
+/* Text alignment optimization rules */
+#expense-table th:nth-child(1), #expense-table td:nth-child(1),
+#expense-table th:nth-child(2), #expense-table td:nth-child(2) {
+  text-align: left; /* Aligns description words to the left */
+}
+
+#expense-table th:nth-child(3), #expense-table td:nth-child(3),
+#expense-table th:nth-child(4), #expense-table td:nth-child(4) {
+  text-align: right; /* Aligns currency data values perfectly to the right */
+}
+
+/* Automated Alternate Zebra-Striping Generator */
+#expense-table tbody tr:nth-child(even) {
+  background-color: rgba(255, 255, 255, 0.02);
+}
+
+/* Real-Time Interactive Row Targeting Highlights */
+#expense-table tbody tr:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  transition: background-color 0.15s ease;
+}
+
+/* Red Money Cost Value Color Assignment */
+.text-expense {
+  color: var(--color-expense) !important;
+  font-weight: 600;
+  font-family: 'Inter', monospace; /* Monospace spacing forces numbers to line up neatly */
+}
+
+/* Customized Pill Badges for Ledger Rows */
+.badge {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+}
+
+.badge-housing { background-color: rgba(56, 189, 248, 0.15); color: #38bdf8; }
+.badge-groceries { background-color: rgba(52, 211, 153, 0.15); color: #34d399; }
+.badge-utilities { background-color: rgba(251, 191, 36, 0.15); color: #fbbf24; }
